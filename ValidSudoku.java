@@ -6,7 +6,7 @@
 
 // Your code here along with comments explaining your approach
 class ValidSudoku {
-    public boolean isValidSudoku(char[][] board) {
+	public boolean isValidSudoku(char[][] board) {
         if(null == board || 0 == board.length){return true;}
         Set<Character> box1 = new HashSet<>();
         Set<Character> box2 = new HashSet<>();
@@ -25,51 +25,58 @@ class ValidSudoku {
                 if(board[i][j] != '.'){
                 if(i <= 2){
                     if(j <= 2){
-                        if(box1.contains(board[i][j])){return false;}
-                        else{box1.add(board[i][j]);}
+                        boolean contains = containsInThisBox(box1,board[i][j]);
+                        if(!contains){return false;}
                     }else if(j <=5){
-                        if(box2.contains(board[i][j])){return false;}
-                        else{box2.add(board[i][j]);}
+                        boolean contains = containsInThisBox(box2,board[i][j]);
+                        if(!contains){return false;}
                     }else{
-                        if(box3.contains(board[i][j])){return false;}
-                        else{box3.add(board[i][j]);}
+                        boolean contains = containsInThisBox(box3,board[i][j]);
+                        if(!contains){return false;}
                     }
                 }else if(i <= 5){
                     if(j <= 2){
-                        if(box4.contains(board[i][j])){return false;}
-                        else{box4.add(board[i][j]);}
+                        boolean contains = containsInThisBox(box4,board[i][j]);
+                        if(!contains){return false;}
                     }else if(j <=5){
-                        if(box5.contains(board[i][j])){return false;}
-                        else{box5.add(board[i][j]);}
+                        boolean contains = containsInThisBox(box5,board[i][j]);
+                        if(!contains){return false;}
                     }else{
-                        if(box6.contains(board[i][j])){return false;}
-                        else{box6.add(board[i][j]);}
+                        boolean contains = containsInThisBox(box6,board[i][j]);
+                        if(!contains){return false;}
                     }
                 }else{
                     if(j <= 2){
-                        if(box7.contains(board[i][j])){return false;}
-                        else{box7.add(board[i][j]);}
+                        boolean contains = containsInThisBox(box7,board[i][j]);
+                        if(!contains){return false;}
                     }else if(j <=5){
-                        if(box8.contains(board[i][j])){return false;}
-                        else{box8.add(board[i][j]);}
+                        boolean contains = containsInThisBox(box8,board[i][j]);
+                        if(!contains){return false;}
                     }else{
-                        if(box9.contains(board[i][j])){return false;}
-                        else{box9.add(board[i][j]);}
+                        boolean contains = containsInThisBox(box9,board[i][j]);
+                        if(!contains){return false;}
                     }
                 }
-                if(!rowMap.containsKey(i)){
-                    rowMap.put(i,new HashSet<>());
-                }
-                if(rowMap.get(i).contains(board[i][j])){return false;}
-                rowMap.get(i).add(board[i][j]);
-                if(!colMap.containsKey(j)){
-                    colMap.put(j,new HashSet<>());
-                }
-                if(colMap.get(j).contains(board[i][j])){return false;}
-                colMap.get(j).add(board[i][j]);
+                boolean containsInRow = containsInThisRowOrColumn(rowMap,board[i][j],i);
+                if(!containsInRow){return false;}
+                boolean containsInCol = containsInThisRowOrColumn(colMap,board[i][j],j);
+                if(!containsInCol){return false;}
             }
             }
         }
+        return true;
+    }
+    private boolean containsInThisBox(Set<Character> box, char ch){
+        if(box.contains(ch)){return false;}
+        else{box.add(ch);}
+        return true;
+    }
+    private boolean containsInThisRowOrColumn(Map<Integer,Set<Character>> rowOrColMap, char ch, Integer key){
+        if(!rowOrColMap.containsKey(key)){
+            rowOrColMap.put(key,new HashSet<>());
+        }
+        if(rowOrColMap.get(key).contains(ch)){return false;}
+        rowOrColMap.get(key).add(ch);
         return true;
     }
 }
